@@ -1,9 +1,11 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") version "1.3.61"
 }
 
 allprojects {
-    apply(plugin="kotlin")
+    apply(plugin = "kotlin")
 
     repositories {
         mavenCentral()
@@ -13,6 +15,18 @@ allprojects {
         implementation(kotlin("stdlib"))
 
         testImplementation(kotlin("test"))
-        testImplementation(kotlin("test-junit"))
+        testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    tasks.withType<KotlinCompile>().all {
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+        }
     }
 }
+
+
