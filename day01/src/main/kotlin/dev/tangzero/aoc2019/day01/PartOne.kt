@@ -5,8 +5,7 @@ fun partOne() {
 }
 
 fun totalFuel(): Int {
-    val input = ClassLoader.getSystemResourceAsStream("input.txt")!!
-    return input
+    return ClassLoader.getSystemResourceAsStream("input.txt")!!
             .bufferedReader()
             .lines()
             .mapToInt(String::toInt)
