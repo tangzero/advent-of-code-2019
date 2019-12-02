@@ -10,16 +10,16 @@ class PartTwoTest {
 
         @JvmStatic
         fun inputs() = listOf(
-                Arguments.of(14, 2),
-                Arguments.of(1969, 966),
-                Arguments.of(100756, 50346)
+            Arguments.of(14, 2),
+            Arguments.of(1969, 966),
+            Arguments.of(100756, 50346)
         )
     }
 
     @ParameterizedTest(name = "Fuel of {0} should be equal to {1}")
     @MethodSource("inputs")
     fun `should calculate the necessary fuel based on the mass of the fuel itself`(
-            mass: Int, expectedFuel: Int) {
+        mass: Int, expectedFuel: Int) {
 
         val fuel = calculateNecessaryFuelV2(mass)
         assertEquals(expectedFuel, fuel)

@@ -6,11 +6,11 @@ fun partTwo() {
 
 fun totalFuelV2(): Int {
     return ClassLoader.getSystemResourceAsStream("input.txt")!!
-            .bufferedReader()
-            .lines()
-            .mapToInt(String::toInt)
-            .map(::calculateNecessaryFuelV2)
-            .sum()
+        .bufferedReader()
+        .lines()
+        .mapToInt(String::toInt)
+        .map(::calculateNecessaryFuelV2)
+        .sum()
 }
 
 fun calculateNecessaryFuelV2(mass: Int): Int {

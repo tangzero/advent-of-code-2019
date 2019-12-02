@@ -10,10 +10,10 @@ class PartOneTest {
 
         @JvmStatic
         fun inputs() = listOf(
-                Arguments.of(12, 2),
-                Arguments.of(14, 2),
-                Arguments.of(1969, 654),
-                Arguments.of(100756, 33583)
+            Arguments.of(12, 2),
+            Arguments.of(14, 2),
+            Arguments.of(1969, 654),
+            Arguments.of(100756, 33583)
         )
     }
 
