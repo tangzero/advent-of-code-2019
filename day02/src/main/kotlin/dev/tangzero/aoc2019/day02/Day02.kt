@@ -5,6 +5,7 @@ typealias IntCodes = MutableList<Int>
 fun main() {
     println("Day 2: 1202 Program Alarm")
     partOne()
+    partTwo()
 }
 
 fun intCodes(): IntCodes {
