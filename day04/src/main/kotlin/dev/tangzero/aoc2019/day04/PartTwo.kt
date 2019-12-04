@@ -7,7 +7,7 @@ fun partTwo(range: IntRange): Int {
 fun String.stillAValidPassword() =
     isAValidPassword() && hasEvenRepetitions()
 
-fun String.hasEvenRepetitions() =
+private fun String.hasEvenRepetitions() =
     this.split("")
         .filter(String::isNotBlank)
         .groupBy { it }

@@ -5,17 +5,15 @@ fun partOne(range: IntRange): Int {
 }
 
 fun String.isAValidPassword() =
-    hasTwoAdjacentDigits() && neverDecrease()
+    neverDecrease() && hasTwoAdjacentDigits()
 
-fun String.hasTwoAdjacentDigits(): Boolean {
-    for (i in 1 until length) {
-        if (this[i] == this[i - 1]) {
-            return true
-        }
-    }
-    return false
-}
+private fun String.hasTwoAdjacentDigits() =
+    this.split("")
+        .filter(String::isNotBlank)
+        .groupBy { it }
+        .values
+        .count { it.size >= 2 } >= 1
 
-fun String.neverDecrease() =
+private fun String.neverDecrease() =
     this == this.split("").sorted().joinToString(separator = "")
 
