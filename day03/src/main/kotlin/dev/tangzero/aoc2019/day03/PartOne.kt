@@ -1,6 +1,15 @@
 package dev.tangzero.aoc2019.day03
 
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
+
+//fun main() {
+//    val boxA = Segment(Point(10, 0), Point(10, 20))
+//    val boxB = Segment(Point(5, 5), Point(15, 5))
+//    val i = boxA.intersect(boxB)
+//    println(i)
+//}
 
 fun partOne(lines: List<String>): Int {
     val (wireA, wireB) = lines.map(::createWire)
@@ -9,17 +18,39 @@ fun partOne(lines: List<String>): Int {
 
 data class Point(val x: Int, val y: Int) {
     fun manhattan() = abs(x) + abs(y)
+    fun isZero() = x == 0 && y == 0
 }
 
-data class Wire(val points: List<Point>)
+data class Segment(val start: Point, val end: Point) {
+    fun intersect(other: Segment): Point? {
+        if (start.isZero() || other.start.isZero()) {
+            return null
+        }
+
+        if (start.x == end.x) {
+            if ((start.x in (min(other.start.x, other.end.x)..max(other.start.x, other.end.x)))
+                && ((other.start.y in min(start.y, end.y)..max(start.y, end.y)))) {
+                return Point(start.x, other.start.y)
+            }
+        }
+
+        if (start.y == end.y) {
+            if ((start.y in (min(other.start.y, other.end.y)..max(other.start.y, other.end.y)))
+                && ((other.start.x in min(start.x, end.x)..max(start.x, end.x)))) {
+                return Point(other.start.x, start.y)
+            }
+        }
+        return null
+    }
+}
+
+data class Wire(val segments: List<Segment>)
 
 fun intersections(wireA: Wire, wireB: Wire): List<Point> {
     val crosses = mutableListOf<Point>()
-    for (pA in wireA.points) {
-        for (pB in wireB.points) {
-            if (pA == pB && pA != Point(0, 0)) {
-                crosses.add(pA)
-            }
+    for (segmentA in wireA.segments) {
+        for (segmentB in wireB.segments) {
+            segmentA.intersect(segmentB)?.let(crosses::add)
         }
     }
     return crosses
@@ -28,20 +59,20 @@ fun intersections(wireA: Wire, wireB: Wire): List<Point> {
 fun createWire(input: String): Wire {
     var start = Point(0, 0)
     val points = input.split(",")
-        .map { move -> createPoints(start, move).also { points -> start = points.last() } }
-        .reduce { acc, list -> acc + list }
+        .map { move -> createSegment(start, move).also { segment -> start = segment.end } }
         .distinct()
     return Wire(points)
 }
 
-fun createPoints(start: Point, move: String): List<Point> {
+fun createSegment(start: Point, move: String): Segment {
     val dir = move[0]
     val steps = move.substring(1).toInt()
-    return when (dir) {
-        'U' -> (start.y.rangeTo(start.y + steps)).map { Point(start.x, it) }
-        'D' -> (start.y.downTo(start.y - steps)).map { Point(start.x, it) }
-        'R' -> (start.x.rangeTo(start.x + steps)).map { Point(it, start.y) }
-        'L' -> (start.x.downTo(start.x - steps)).map { Point(it, start.y) }
-        else -> emptyList()
+    val end = when (dir) {
+        'U' -> Point(start.x, start.y + steps)
+        'D' -> Point(start.x, start.y - steps)
+        'R' -> Point(start.x + steps, start.y)
+        'L' -> Point(start.x - steps, start.y)
+        else -> start
     }
+    return Segment(start, end)
 }
