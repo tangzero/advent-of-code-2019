@@ -4,9 +4,8 @@ fun main() {
     val range = readRange()
 
     println("Day 4: Secure Container")
-
-    val passwords = partOne(range)
-    println("Part One: $passwords different passwords")
+    println("Part One: ${partOne(range)} different passwords")
+    println("Part Two: ${partTwo(range)} different passwords")
 }
 
 fun readRange(): IntRange {
