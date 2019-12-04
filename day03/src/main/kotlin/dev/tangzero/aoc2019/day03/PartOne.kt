@@ -1,12 +1,10 @@
 package dev.tangzero.aoc2019.day03
 
-import java.util.stream.Collectors
 import kotlin.math.abs
 
-fun partOne() {
-    val (wireA, wireB) = readWires()
-    val distance = calculateClosestIntersection(wireA, wireB)
-    println("Part One: the Manhattan distance is $distance")
+fun partOne(lines: List<String>): Int {
+    val (wireA, wireB) = lines.map(::createWire)
+    return intersections(wireA, wireB).map(Point::manhattan).min()!!
 }
 
 data class Point(val x: Int, val y: Int) {
@@ -15,9 +13,8 @@ data class Point(val x: Int, val y: Int) {
 
 data class Wire(val points: List<Point>)
 
-fun calculateClosestIntersection(wireA: Wire, wireB: Wire): Int {
+fun intersections(wireA: Wire, wireB: Wire): List<Point> {
     val crosses = mutableListOf<Point>()
-
     for (pA in wireA.points) {
         for (pB in wireB.points) {
             if (pA == pB && pA != Point(0, 0)) {
@@ -25,33 +22,26 @@ fun calculateClosestIntersection(wireA: Wire, wireB: Wire): Int {
             }
         }
     }
-
-    return crosses.map(Point::manhattan).min()!!
+    return crosses
 }
-
-fun readWires(): List<Wire> =
-    ClassLoader.getSystemResourceAsStream("input.txt")!!
-        .bufferedReader()
-        .lines()
-        .map { createWire(it) }
-        .collect(Collectors.toList())
 
 fun createWire(input: String): Wire {
     var start = Point(0, 0)
     val points = input.split(",")
         .map { move -> createPoints(start, move).also { points -> start = points.last() } }
         .reduce { acc, list -> acc + list }
+        .distinct()
     return Wire(points)
 }
 
 fun createPoints(start: Point, move: String): List<Point> {
     val dir = move[0]
-    val amount = move.substring(1).toInt()
+    val steps = move.substring(1).toInt()
     return when (dir) {
-        'U' -> (start.y.rangeTo(start.y + amount)).map { Point(start.x, it) }
-        'D' -> (start.y.downTo(start.y - amount)).map { Point(start.x, it) }
-        'R' -> (start.x.rangeTo(start.x + amount)).map { Point(it, start.y) }
-        'L' -> (start.x.downTo(start.x - amount)).map { Point(it, start.y) }
+        'U' -> (start.y.rangeTo(start.y + steps)).map { Point(start.x, it) }
+        'D' -> (start.y.downTo(start.y - steps)).map { Point(start.x, it) }
+        'R' -> (start.x.rangeTo(start.x + steps)).map { Point(it, start.y) }
+        'L' -> (start.x.downTo(start.x - steps)).map { Point(it, start.y) }
         else -> emptyList()
     }
 }
