@@ -4,16 +4,9 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-//fun main() {
-//    val boxA = Segment(Point(10, 0), Point(10, 20))
-//    val boxB = Segment(Point(5, 5), Point(15, 5))
-//    val i = boxA.intersect(boxB)
-//    println(i)
-//}
-
 fun partOne(lines: List<String>): Int {
     val (wireA, wireB) = lines.map(::createWire)
-    return intersections(wireA, wireB).map(Point::manhattan).min()!!
+    return wireA.intersections(wireB).map(Point::manhattan).min()!!
 }
 
 data class Point(val x: Int, val y: Int) {
@@ -28,15 +21,13 @@ data class Segment(val start: Point, val end: Point) {
         }
 
         if (start.x == end.x) {
-            if ((start.x in (min(other.start.x, other.end.x)..max(other.start.x, other.end.x)))
-                && ((other.start.y in min(start.y, end.y)..max(start.y, end.y)))) {
+            if ((start.x in min(other.start.x, other.end.x)..max(other.start.x, other.end.x))
+                && (other.start.y in min(start.y, end.y)..max(start.y, end.y))) {
                 return Point(start.x, other.start.y)
             }
-        }
-
-        if (start.y == end.y) {
-            if ((start.y in (min(other.start.y, other.end.y)..max(other.start.y, other.end.y)))
-                && ((other.start.x in min(start.x, end.x)..max(start.x, end.x)))) {
+        } else {
+            if ((start.y in min(other.start.y, other.end.y)..max(other.start.y, other.end.y))
+                && (other.start.x in min(start.x, end.x)..max(start.x, end.x))) {
                 return Point(other.start.x, start.y)
             }
         }
@@ -44,16 +35,16 @@ data class Segment(val start: Point, val end: Point) {
     }
 }
 
-data class Wire(val segments: List<Segment>)
-
-fun intersections(wireA: Wire, wireB: Wire): List<Point> {
-    val crosses = mutableListOf<Point>()
-    for (segmentA in wireA.segments) {
-        for (segmentB in wireB.segments) {
-            segmentA.intersect(segmentB)?.let(crosses::add)
+data class Wire(val segments: List<Segment>) {
+    fun intersections(other: Wire): List<Point> {
+        val crosses = mutableListOf<Point>()
+        for (segment in segments) {
+            for (otherSegment in other.segments) {
+                segment.intersect(otherSegment)?.let(crosses::add)
+            }
         }
+        return crosses
     }
-    return crosses
 }
 
 fun createWire(input: String): Wire {
