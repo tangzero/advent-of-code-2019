@@ -16,12 +16,12 @@ class PartOneTest {
         fun codes() = listOf(
             Arguments.of(listOf(3, 0, 4, 0, 99), "1"),
             Arguments.of(listOf(1002, 4, 2, 4, 2, 4, 99), "4"),
-            Arguments.of(listOf(1002, 4, 2, 4, 2, 4, 99), "4")
+            Arguments.of(listOf(101, 4, 3, 7, 4, 7, 99, 50), "11")
         )
     }
 
-    private val out: PrintStream = System.out
-    private val buffer: ByteArrayOutputStream = ByteArrayOutputStream()
+    private val out = System.out
+    private val buffer = ByteArrayOutputStream()
 
     @BeforeEach
     fun setup() {
