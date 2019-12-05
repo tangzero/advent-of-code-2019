@@ -6,8 +6,12 @@ fun main() {
     val codes = readIntCodes()
 
     println("Day 5: Sunny with a Chance of Asteroids")
+
     println("Part One: running the diagnostic program...")
-    partOne(codes)
+    PartOne.process(codes.toMutableList(), input = 1)
+
+    println("Part Two: running the diagnostic program again...")
+    PartTwo.process(codes.toMutableList(), input = 5)
 }
 
 fun readIntCodes(): IntCodes {

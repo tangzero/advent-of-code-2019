@@ -14,9 +14,9 @@ class PartOneTest {
 
         @JvmStatic
         fun codes() = listOf(
-            Arguments.of(listOf(3, 0, 4, 0, 99), "1"),
-            Arguments.of(listOf(1002, 4, 2, 4, 2, 4, 99), "4"),
-            Arguments.of(listOf(101, 4, 3, 7, 4, 7, 99, 50), "11")
+            Arguments.of(listOf(3, 0, 4, 0, 99), 88, "88"),
+            Arguments.of(listOf(1002, 4, 2, 4, 2, 4, 99), 1, "4"),
+            Arguments.of(listOf(101, 4, 3, 7, 4, 7, 99, 50), 1, "11")
         )
     }
 
@@ -36,9 +36,9 @@ class PartOneTest {
 
     @ParameterizedTest
     @MethodSource("codes")
-    fun `should run the diagnostic program`(codes: IntCodes, expected: String) {
-        partOne(codes)
-        assertEquals(expected, buffer.toString().trim())
+    fun `should run the diagnostic program`(codes: IntCodes, input: Int, output: String) {
+        PartOne.process(codes, input)
+        assertEquals(output, buffer.toString().trim())
     }
 
 }
