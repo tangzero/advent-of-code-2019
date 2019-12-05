@@ -1,2 +1,2 @@
 rootProject.name = "advent-of-code"
-include("day01", "day02", "day03", "day04")
+(1..25).forEach { day -> include(String.format("day%02d", day)) }
