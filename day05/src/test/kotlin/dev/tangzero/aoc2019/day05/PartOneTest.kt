@@ -37,7 +37,7 @@ class PartOneTest {
     @ParameterizedTest
     @MethodSource("codes")
     fun `should run the diagnostic program`(codes: IntCodes, expected: String) {
-        process(codes)
+        partOne(codes)
         assertEquals(expected, buffer.toString().trim())
     }
 
